@@ -532,6 +532,7 @@ function run() {
             let inputs = yield context.getInputs(defContext);
             const args = yield context.getArgs(inputs, defContext, buildxVersion);
             if (inputs.problemMatcher) {
+                core.info("Enabling problem matcher");
                 context.enableProblemMatcher(inputs.problemMatcher);
             }
             yield exec

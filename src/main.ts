@@ -23,6 +23,7 @@ async function run(): Promise<void> {
     let inputs: context.Inputs = await context.getInputs(defContext);
     const args: string[] = await context.getArgs(inputs, defContext, buildxVersion);
     if (inputs.problemMatcher) {
+      core.info("Enabling problem matcher");
       context.enableProblemMatcher(inputs.problemMatcher);
     }
     await exec
