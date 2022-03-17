@@ -90,6 +90,10 @@ inputs:
     description: "GitHub Token used to authenticate against a repository for Git context"
     default: ${{ github.token }}
     required: false
+  problem-matcher:
+    description: "Problem matcher to be used on the output of the build process"
+    required: false
+
 
 outputs:
   imageid:

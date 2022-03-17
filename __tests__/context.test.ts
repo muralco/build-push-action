@@ -707,6 +707,17 @@ describe('setOutput', () => {
   });
 });
 
+describe('enableProblemMatcher', () => {
+  beforeEach(() => {
+    process.stdout.write = jest.fn();
+  });
+
+  it('setOutput produces the correct command', () => {
+    context.enableProblemMatcher('some-problem-matcher.json');
+    assertWriteCalls([`::add-matcher::some-problem-matcher.json${os.EOL}`]);
+  });
+});
+
 // See: https://github.com/actions/toolkit/blob/a1b068ec31a042ff1e10a522d8fdf0b8869d53ca/packages/core/src/core.ts#L89
 function getInputName(name: string): string {
   return `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;

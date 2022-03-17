@@ -243,7 +243,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.setOutput = exports.asyncForEach = exports.getInputList = exports.getArgs = exports.getInputs = exports.tmpNameSync = exports.tmpDir = exports.defaultContext = void 0;
+exports.enableProblemMatcher = exports.setOutput = exports.asyncForEach = exports.getInputList = exports.getArgs = exports.getInputs = exports.tmpNameSync = exports.tmpDir = exports.defaultContext = void 0;
 const sync_1 = __importDefault(__nccwpck_require__(8750));
 const fs = __importStar(__nccwpck_require__(5747));
 const os = __importStar(__nccwpck_require__(2087));
@@ -308,7 +308,8 @@ function getInputs(defaultContext) {
             tags: yield getInputList('tags'),
             target: core.getInput('target'),
             ulimit: yield getInputList('ulimit', true),
-            githubToken: core.getInput('github-token')
+            githubToken: core.getInput('github-token'),
+            problemMatcher: core.getInput('problem-matcher')
         };
     });
 }
@@ -466,6 +467,10 @@ function setOutput(name, value) {
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
+function enableProblemMatcher(name) {
+    command_1.issueCommand('add-matcher', {}, name);
+}
+exports.enableProblemMatcher = enableProblemMatcher;
 //# sourceMappingURL=context.js.map
 
 /***/ }),
@@ -526,6 +531,9 @@ function run() {
             const defContext = context.defaultContext();
             let inputs = yield context.getInputs(defContext);
             const args = yield context.getArgs(inputs, defContext, buildxVersion);
+            if (inputs.problemMatcher) {
+                context.enableProblemMatcher(inputs.problemMatcher);
+            }
             yield exec
                 .getExecOutput('docker', args, {
                 ignoreReturnCode: true

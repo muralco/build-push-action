@@ -40,6 +40,7 @@ export interface Inputs {
   target: string;
   ulimit: string[];
   githubToken: string;
+  problemMatcher: string;
 }
 
 export function defaultContext(): string {
@@ -94,7 +95,8 @@ export async function getInputs(defaultContext: string): Promise<Inputs> {
     tags: await getInputList('tags'),
     target: core.getInput('target'),
     ulimit: await getInputList('ulimit', true),
-    githubToken: core.getInput('github-token')
+    githubToken: core.getInput('github-token'),
+    problemMatcher: core.getInput('problem-matcher')
   };
 }
 
@@ -243,4 +245,8 @@ export const asyncForEach = async (array, callback) => {
 // FIXME: Temp fix https://github.com/actions/toolkit/issues/777
 export function setOutput(name: string, value: any): void {
   issueCommand('set-output', {name}, value);
+}
+
+export function enableProblemMatcher(name: string): void {
+  issueCommand('add-matcher', {}, name);
 }

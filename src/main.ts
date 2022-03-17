@@ -21,8 +21,10 @@ async function run(): Promise<void> {
     const buildxVersion = await buildx.getVersion();
     const defContext = context.defaultContext();
     let inputs: context.Inputs = await context.getInputs(defContext);
-
     const args: string[] = await context.getArgs(inputs, defContext, buildxVersion);
+    if (inputs.problemMatcher) {
+      context.enableProblemMatcher(inputs.problemMatcher);
+    }
     await exec
       .getExecOutput('docker', args, {
         ignoreReturnCode: true
